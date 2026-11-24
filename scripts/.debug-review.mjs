@@ -1,0 +1,53 @@
+import { chromium } from 'playwright-core';
+const base = 'http://127.0.0.1:5178';
+const browser = await chromium.launch({ channel: 'chrome', headless: true });
+const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+const page = await context.newPage();
+page.on('console', (msg) => { if (['error', 'warning'].includes(msg.type())) console.log('console', msg.type(), msg.text().slice(0, 300), JSON.stringify(msg.location())); });
+page.on('pageerror', (e) => console.log('pageerror', e.message));
+await page.goto(`${base}/?lang=en&theme=light&file=index.html`, { waitUntil: 'networkidle' });
+await page.waitForTimeout(2000);
+const viewer = page.locator('[data-testid="retained-file-viewer"]:not([aria-hidden])');
+await page.evaluate(() => {
+  window.__msgs = [];
+  window.addEventListener('message', (e) => { if (e.data && typeof e.data.type === 'string' && /comment|edit/.test(e.data.type)) window.__msgs.push(e.data.type); });
+});
+const mode = process.argv[2] ?? 'comment';
+if (mode === 'comment') {
+  await viewer.getByTestId('board-mode-toggle').click();
+  await page.waitForTimeout(500);
+  const frameEl = await viewer.locator('[data-testid="artifact-preview-frame"]').elementHandle();
+  const frame = await frameEl.contentFrame();
+  const fb = await frameEl.boundingBox();
+  const hb = await frame.locator('h1').first().boundingBox();
+  console.log('frame box', fb, 'h1 box', hb);
+  await page.mouse.move(hb.x + hb.width / 2, hb.y + hb.height / 2);
+  await page.waitForTimeout(400);
+  const pop = await page.getByTestId('annotation-hover-popover').boundingBox().catch(() => null);
+  console.log('hover popover', pop);
+  const at = await page.evaluate(({ x, y }) => { const el = document.elementFromPoint(x, y); return el ? `${el.tagName}.${el.className}` : null; }, { x: hb.x + hb.width / 2, y: hb.y + hb.height / 2 });
+  console.log('element at h1 center (host)', at);
+  await page.mouse.click(hb.x + hb.width / 2, hb.y + hb.height / 2);
+  await page.waitForTimeout(800);
+  console.log('messages', JSON.stringify(await page.evaluate(() => window.__msgs.slice(-12))));
+  console.log('composer', await page.getByTestId('comment-popover').count());
+  console.log('overlay', await viewer.getByTestId('comment-target-overlay').count());
+} else {
+  await viewer.getByTestId('manual-edit-mode-toggle').click();
+  await page.waitForTimeout(800);
+  const frameEl = await viewer.locator('[data-testid="artifact-preview-frame"]').elementHandle();
+  const frame = await frameEl.contentFrame();
+  await frame.locator('h1').first().hover();
+  await page.waitForTimeout(400);
+  await page.getByTestId('manual-edit-hover-open').click();
+  await page.waitForTimeout(400);
+  const ta = page.locator('.manual-edit-content-inspector textarea').first();
+  console.log('textarea value', await ta.inputValue());
+  await ta.fill('Edited headline');
+  await page.locator('.manual-edit-footer-btn.primary').click();
+  await page.waitForTimeout(1500);
+  console.log('error', await page.locator('.manual-edit-error').textContent().catch(() => null));
+  console.log('h1 now', await (await (await viewer.locator('[data-testid="artifact-preview-frame"]').elementHandle()).contentFrame()).locator('h1').first().textContent());
+  console.log('messages', JSON.stringify(await page.evaluate(() => window.__msgs.slice(-20))));
+}
+await browser.close();

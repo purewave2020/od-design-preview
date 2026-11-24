@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lumen 3.0 — Launch review</title>
+<style>
+  :root {
+    --ink: #121018; --muted: #6b6679; --paper: #f6f4ef; --accent: #5b3df5; --hot: #ff6a88;
+    --ease: cubic-bezier(.4, 0, .2, 1);
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--paper); color: var(--ink); }
+  .deck { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
+  .slide {
+    position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center;
+    padding: 7vh 8vw; opacity: 0; pointer-events: none; transform: translateY(16px);
+    transition: opacity .45s var(--ease), transform .45s var(--ease);
+  }
+  .slide.is-active { opacity: 1; pointer-events: auto; transform: none; z-index: 2; }
+  .kicker { font-size: 1.6vw; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+  h1 { font-size: 7.2vw; line-height: .98; letter-spacing: -.04em; margin: 2vh 0; }
+  h2 { font-size: 4.4vw; line-height: 1.05; letter-spacing: -.03em; margin: 0 0 4vh; }
+  p.lead { font-size: 2.1vw; color: var(--muted); max-width: 46ch; margin: 0; }
+  .cover { background: radial-gradient(120% 120% at 100% 0%, #e8e2ff 0%, var(--paper) 55%); }
+  .cover h1 span { background: linear-gradient(90deg, var(--accent), var(--hot)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.4vw; }
+  .card { padding: 3vh 2vw; border-radius: 1.6vw; background: #fff; border: 1px solid #e6e2ee; }
+  .card b { display: block; font-size: 4.4vw; letter-spacing: -.03em; }
+  .card span { font-size: 1.5vw; color: var(--muted); }
+  .bars { display: flex; align-items: flex-end; gap: 2vw; height: 42vh; padding-top: 2vh; border-bottom: 2px solid #ddd8e6; }
+  .bars div { flex: 1; border-radius: 1vw 1vw 0 0; background: linear-gradient(180deg, var(--accent), #8f7bff); position: relative; }
+  .bars div::after { content: attr(data-label); position: absolute; bottom: -4.5vh; left: 0; right: 0; text-align: center; font-size: 1.4vw; color: var(--muted); }
+  .bars div.now { background: linear-gradient(180deg, var(--hot), #ffa0b4); }
+  ol.plan { margin: 0; padding: 0; list-style: none; display: grid; gap: 2.2vh; font-size: 2.3vw; }
+  ol.plan li { display: flex; gap: 1.6vw; align-items: baseline; }
+  ol.plan li em { font-style: normal; font-size: 1.4vw; font-weight: 700; color: var(--accent); min-width: 6vw; }
+  .dark { background: var(--ink); color: #fff; }
+  .dark p.lead { color: #b9b3c9; }
+  .foot { position: absolute; left: 8vw; right: 8vw; bottom: 5vh; display: flex; justify-content: space-between; font-size: 1.2vw; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="deck">
+  <section class="slide cover is-active" data-title="Cover">
+    <div class="kicker">Launch review · Q3</div>
+    <h1>Lumen <span>3.0</span><br />ships in 6 weeks.</h1>
+    <p class="lead">Where we are, what moved, and the three decisions we need today.</p>
+    <div class="foot"><span>Product &amp; Design</span><span>Confidential draft</span></div>
+  </section>
+
+  <section class="slide" data-title="Traction">
+    <div class="kicker">Traction</div>
+    <h2>Teams stick once linking clicks.</h2>
+    <div class="grid3">
+      <div class="card"><b>48k</b><span>weekly active teams</span></div>
+      <div class="card"><b>+31%</b><span>D30 retention with ambient links</span></div>
+      <div class="card"><b>4.8★</b><span>App Store rating, 9k reviews</span></div>
+    </div>
+  </section>
+
+  <section class="slide" data-title="Growth">
+    <div class="kicker">Growth</div>
+    <h2>Weekly active teams (k)</h2>
+    <div class="bars">
+      <div style="height:34%" data-label="Q4"></div>
+      <div style="height:46%" data-label="Q1"></div>
+      <div style="height:61%" data-label="Q2"></div>
+      <div class="now" style="height:88%" data-label="Q3"></div>
+    </div>
+  </section>
+
+  <section class="slide" data-title="Plan">
+    <div class="kicker">Plan to launch</div>
+    <h2>Six weeks, three tracks.</h2>
+    <ol class="plan">
+      <li><em>W1–2</em>Freeze linking model, ship beta to 2k teams</li>
+      <li><em>W3–4</em>Canvas performance pass, offline sync</li>
+      <li><em>W5–6</em>Pricing switch, launch site, press</li>
+    </ol>
+  </section>
+
+  <section class="slide dark" data-title="Decisions">
+    <div class="kicker">Decisions needed</div>
+    <h2>1. Price Pro at $8.<br />2. Drop the desktop beta.<br />3. Launch on a Tuesday.</h2>
+    <p class="lead">Questions → #lumen-launch</p>
+  </section>
+</div>
+<script type="application/json" id="speaker-notes">[
+  "Open with the date: six weeks from today. Keep it under a minute.",
+  "Retention is the headline — ambient linking is why teams stay.",
+  "Q3 is the first quarter we cross 40k weekly teams. Pause here.",
+  "Each track has one owner; call them out by name.",
+  "Ask for an explicit yes/no on each decision before leaving the room."
+]</script>
+</body>
+</html>

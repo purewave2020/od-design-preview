@@ -1,0 +1,39 @@
+{
+  "name": "od-design-preview",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Standalone design preview workspace extracted from Open Design (nexu-io/open-design) — the right-hand preview panel of the project workspace, with its comment, mark, edit and sketch tools, as its own web front-end.",
+  "license": "Apache-2.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit -p tsconfig.json && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "sync:upstream": "node scripts/sync-upstream.mjs",
+    "smoke": "node scripts/smoke.mjs",
+    "smoke:review": "node scripts/review-smoke.mjs",
+    "mock-daemon": "node scripts/mock-daemon.mjs"
+  },
+  "dependencies": {
+    "@excalidraw/excalidraw": "0.18.1",
+    "dompurify": "3.4.2",
+    "jspdf": "4.2.1",
+    "micromark": "4.0.2",
+    "micromark-extension-gfm": "3.0.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.28",
+    "@types/react-dom": "18.3.7",
+    "@vitejs/plugin-react": "6.3.0",
+    "playwright-core": "1.65.1",
+    "purgecss": "9.1.0",
+    "typescript": "7.0.2",
+    "vite": "8.3.8"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

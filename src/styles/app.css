@@ -1,0 +1,501 @@
+/* Standalone shell + the few controls this app adds on top of the upstream
+   preview surface. Everything visual borrows the upstream design tokens
+   (tokens.css) so light/dark themes stay consistent with Open Design. */
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+/* The upstream `.app` grid reserves a chrome row above the split view; the
+   standalone preview is just the workspace pane, filling the window. */
+.app.odp-app {
+  grid-template-rows: minmax(0, 1fr);
+  height: 100vh;
+  height: 100dvh;
+}
+
+.app.odp-app > .workspace {
+  grid-row: 1;
+  margin: 8px;
+  min-height: 0;
+  background: var(--veil-canvas, var(--bg));
+  border: 1px solid var(--border-soft, var(--border));
+}
+
+.odp-embed.workspace {
+  height: 100vh;
+  height: 100dvh;
+  margin: 0;
+  border: none;
+  border-radius: 0;
+}
+.odp-embed .ws-body {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+
+/* ---------------------------------------------------------------------------
+   Project chip (left of the tab strip) */
+.odp-project-dock {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  padding-right: 10px;
+  margin-right: 2px;
+  border-right: 1px solid var(--border);
+  height: 22px;
+}
+
+.odp-project-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  max-width: 240px;
+  padding: 0 8px 0 6px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text-strong);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 120ms var(--ease-out, ease-out);
+}
+.odp-project-chip:hover,
+.odp-project-chip[aria-expanded='true'] {
+  background: var(--bg-subtle);
+}
+.odp-project-chip:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.odp-project-chip-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 7px;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  flex: 0 0 auto;
+}
+.odp-project-chip-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.odp-live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--brand, #87ea5c);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand, #87ea5c) 30%, transparent);
+  flex: 0 0 auto;
+}
+
+/* ---------------------------------------------------------------------------
+   Menus portaled to <body> (AnchoredPopover). Upstream positions these
+   absolutely under their trigger; here the portal pins them with inline
+   `position: fixed`, so cancel the centring transform some of them carry. */
+.odp-floating-menu {
+  transform: none !important;
+  margin: 0 !important;
+}
+.present-menu.odp-floating-menu,
+.share-menu-popover.odp-floating-menu {
+  display: flex;
+  flex-direction: column;
+}
+.chrome-unified-popover.odp-floating-menu {
+  width: max-content;
+  min-width: min(248px, calc(100vw - 32px));
+  max-width: min(360px, calc(100vw - 32px));
+  padding: 6px;
+}
+.share-menu-item {
+  text-decoration: none;
+}
+
+.odp-menu {
+  width: min(320px, calc(100vw - 24px));
+  max-height: min(80vh, 640px);
+  overflow: auto;
+  padding: 5px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-panel);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  font-size: 12.5px;
+}
+.odp-menu-section-label {
+  padding: 6px 8px 4px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+.odp-menu-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  min-height: 34px;
+  padding: 7px 8px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.odp-menu-item > svg {
+  flex: 0 0 auto;
+  margin-top: 1px;
+  color: var(--text-muted);
+}
+.odp-menu-item:hover {
+  background: var(--bg-subtle);
+}
+.odp-menu-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.odp-menu-copy > span {
+  color: var(--text-strong);
+}
+.odp-menu-copy small {
+  color: var(--text-muted);
+  font-size: 11.5px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+.odp-menu-separator {
+  height: 1px;
+  margin: 5px 4px;
+  background: var(--border);
+}
+.odp-menu-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 4px 8px;
+  min-height: 34px;
+}
+.odp-menu-row-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text);
+}
+.odp-menu-row-label > svg {
+  color: var(--text-muted);
+}
+.odp-seg.viewer-tabs .viewer-tab {
+  padding: 0 8px;
+  min-height: 24px;
+  height: 24px;
+  font-size: 12px;
+}
+
+/* ---------------------------------------------------------------------------
+   Viewer additions */
+.odp-inline-file-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 6px;
+}
+
+.odp-preview-notice {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  max-width: calc(100% - 32px);
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-panel);
+  box-shadow: var(--shadow-md);
+  color: var(--text);
+  font-size: 12.5px;
+}
+
+.odp-pdf-object {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Search field in the Design Files top bar. */
+.odp-df-search {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm, 8px);
+  background: var(--bg);
+  color: var(--text-muted);
+}
+.odp-df-search input {
+  width: 160px;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 12.5px;
+  padding: 0;
+  min-height: 0;
+  box-shadow: none;
+}
+.odp-df-search:focus-within {
+  border-color: var(--border-strong);
+}
+
+/* ---------------------------------------------------------------------------
+   Daemon dialog */
+.odp-modal {
+  width: 560px;
+  max-height: min(86vh, 720px);
+  overflow: auto;
+}
+.odp-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.odp-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text);
+}
+.odp-field > small,
+.odp-form-hint {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.odp-field-row {
+  display: flex;
+  gap: 8px;
+}
+.odp-field-row input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm, 8px);
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+}
+.odp-field-row input:focus {
+  outline: none;
+  border-color: var(--border-strong);
+}
+.odp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm, 8px);
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.odp-btn:hover:not(:disabled) {
+  background: var(--bg-subtle);
+}
+.odp-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.odp-btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-contrast);
+}
+.odp-btn-primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+.odp-form-error {
+  padding: 8px 10px;
+  border-radius: var(--radius-sm, 8px);
+  background: color-mix(in srgb, var(--red, #d33) 10%, transparent);
+  color: var(--red, #b42318);
+  font-size: 12.5px;
+}
+.odp-project-list {
+  list-style: none;
+  margin: 0;
+  padding: 4px;
+  max-height: 260px;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm, 8px);
+}
+.odp-project-list button {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  width: 100%;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+}
+.odp-project-list button:hover {
+  background: var(--bg-subtle);
+}
+.odp-project-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.odp-project-id {
+  flex: 0 0 auto;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-soft);
+}
+
+/* Floating deck nav: upstream reveals it on `.comment-preview-canvas:hover`,
+   which never matches while the pointer is over the out-of-process preview
+   frame. HtmlViewer adds `.is-revealed` from in-frame pointer activity. */
+.deck-floating-nav.is-revealed {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  pointer-events: auto;
+}
+
+/* Upstream design-files.css paints cards with a literal #fff, which leaves the
+   (theme-coloured) card captions unreadable in dark mode. */
+[data-theme='dark'] .df-card {
+  background: var(--bg-elevated);
+}
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) .df-card {
+    background: var(--bg-elevated);
+  }
+}
+
+/* ---- Review / edit tools ------------------------------------------------- */
+
+/* Floating comments card. Upstream reserves room for it with
+   `.split:has(> .comment-float-host:not(:empty)) .viewer-body` (ProjectView's
+   chat/workspace split); this app has no split, so the same reservation keys
+   off the workspace. The card sits below the tab strip + viewer toolbar. */
+.odp-workspace > .comment-float-host {
+  top: 105px;
+}
+.odp-workspace:has(> .comment-float-host:not(:empty)) .viewer-body {
+  box-sizing: border-box;
+  padding-right: max(0px, min(348px, calc(100% - 160px)));
+}
+.odp-workspace:has(> .comment-float-host .comment-side-rail) .viewer-body {
+  padding-right: 64px;
+}
+.odp-comment-panel-inline {
+  position: absolute;
+  top: 56px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 40;
+  display: flex;
+}
+
+/* Resolved comments (shown on demand in the panel). */
+.comment-side-item.odp-comment-resolved {
+  opacity: 0.62;
+  cursor: default;
+}
+.comment-side-item.odp-comment-resolved .comment-side-body {
+  text-decoration: line-through;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+}
+.odp-comment-reopen {
+  margin-left: auto;
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--bg-panel);
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+.odp-comment-reopen:hover {
+  color: var(--text);
+  border-color: var(--border-strong, var(--border));
+}
+.comment-side-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.odp-comment-resolved-toggle[aria-pressed='true'] {
+  color: var(--text);
+}
+
+/* Project menu: where edits are saved. */
+.odp-menu-note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px 8px;
+  color: var(--text-soft);
+  font-size: 12px;
+}
+
+/* Sketch editor fills the viewer like upstream's sketch tab. */
+.viewer.sketch-file-viewer {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+.viewer.sketch-file-viewer > .sketch-editor {
+  flex: 1 1 auto;
+  min-height: 0;
+}
