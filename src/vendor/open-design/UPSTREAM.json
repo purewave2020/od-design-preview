@@ -151,6 +151,10 @@
       "to": "components/Toast.tsx"
     },
     {
+      "from": "apps/web/src/components/TooltipLayer.tsx",
+      "to": "components/TooltipLayer.tsx"
+    },
+    {
       "from": "apps/web/src/components/DeckSlideThumbnail.tsx",
       "to": "components/DeckSlideThumbnail.tsx"
     },
@@ -221,6 +225,10 @@
     {
       "from": "packages/components/src/class-names.ts",
       "to": "ui-components/class-names.ts"
+    },
+    {
+      "from": "packages/components/src/modal-stack.ts",
+      "to": "ui-components/modal-stack.ts"
     }
   ]
 }

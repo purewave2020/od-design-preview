@@ -188,9 +188,11 @@ export function MarkdownViewer({
             autoSaveStatus === 'error' ? (
               <button
                 type="button"
-                className="viewer-action markdown-autosave markdown-autosave-error"
+                className="viewer-action markdown-autosave markdown-autosave-error od-tooltip"
                 onClick={() => text !== null && void save(text)}
                 title={t('fileViewer.save')}
+                data-tooltip={t('fileViewer.save')}
+                data-tooltip-placement="bottom"
               >
                 <Icon name="alert-triangle" size={13} />
                 <span>{autoSaveLabel}</span>
@@ -204,7 +206,7 @@ export function MarkdownViewer({
           ) : null}
           <button
             type="button"
-            className="viewer-action"
+            className="viewer-action od-tooltip"
             onClick={() => {
               if (text === null) return;
               void copyText(text).then((ok) => {
@@ -214,13 +216,17 @@ export function MarkdownViewer({
               });
             }}
             title={t('fileViewer.copyTitle')}
+            data-tooltip={t('fileViewer.copyTitle')}
+            data-tooltip-placement="bottom"
           >
             <Icon name={copied ? 'check' : 'copy'} size={13} />
             <span>{copied ? t('fileViewer.copied') : t('fileViewer.copy')}</span>
           </button>
           <button
             type="button"
-            className="viewer-action"
+            className="viewer-action od-tooltip"
+            data-tooltip={t('fileViewer.exportMd')}
+            data-tooltip-placement="bottom"
             disabled={text === null}
             onClick={() => text !== null && exportAsMd(text, baseName(file.name).replace(/\.[^.]+$/, ''))}
           >

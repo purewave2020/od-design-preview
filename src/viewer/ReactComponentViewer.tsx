@@ -52,6 +52,8 @@ export function ReactComponentViewer({
             className="icon-only od-tooltip"
             onClick={() => setReloadKey((n) => n + 1)}
             title={`${t('fileViewer.reload')} ${t('fileViewer.preview')}`}
+            data-tooltip={`${t('fileViewer.reload')} ${t('fileViewer.preview')}`}
+            data-tooltip-placement="bottom"
             aria-label={`${t('fileViewer.reloadAria')} ${t('fileViewer.preview')}`}
           >
             <Icon name="reload" size={14} />
@@ -81,7 +83,9 @@ export function ReactComponentViewer({
         <div className="viewer-toolbar-actions">
           <button
             type="button"
-            className="viewer-action"
+            className="viewer-action od-tooltip"
+            data-tooltip={t('fileViewer.exportHtml')}
+            data-tooltip-placement="bottom"
             disabled={text === null}
             onClick={() => text !== null && exportReactComponentAsHtml(text, title)}
           >

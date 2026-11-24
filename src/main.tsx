@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { App } from './app/App';
 import { I18nProvider, detectLocale } from './i18n';
 import { ToastProvider } from './ui/Toast';
+import { TooltipLayer } from './vendor/open-design/components/TooltipLayer';
 import './styles/upstream.css';
 import './styles/app.css';
 
@@ -14,6 +15,7 @@ createRoot(document.getElementById('root')!).render(
     <I18nProvider initialLocale={locale}>
       <ToastProvider>
         <App />
+        <TooltipLayer />
       </ToastProvider>
     </I18nProvider>
   </StrictMode>,

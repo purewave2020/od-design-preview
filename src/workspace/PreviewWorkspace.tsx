@@ -114,6 +114,8 @@ const Tab = memo(function Tab({
           onClose();
         }}
         title={closeLabel}
+        data-tooltip={closeLabel}
+        data-tooltip-placement="bottom"
         aria-label={closeLabel}
       >
         <Icon name="close" size={11} />

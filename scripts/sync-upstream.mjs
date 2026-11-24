@@ -103,6 +103,7 @@ const FILES = [
   comp('RemixIcon.tsx'),
   comp('remix-icon-paths.ts'),
   comp('Toast.tsx'),
+  comp('TooltipLayer.tsx'), //          shared hover bubble for `.od-tooltip[data-tooltip]`
   comp('DeckSlideThumbnail.tsx'),
   comp('DeckThumbnailRail.tsx'),
   [web('components/plugins-home/useInView.ts'), 'components/useInView.ts'],
@@ -116,8 +117,8 @@ const FILES = [
   comp('workspace/TabLauncherMenu.tsx'), // tab strip "+" menu
   comp('workspace/TabLauncherMenu.module.css'),
   comp('workspace/tab-launcher.ts'),
-  // @open-design/components primitives used by the composer
-  ...['button.tsx', 'button.module.css', 'form-controls.tsx', 'form-controls.module.css', 'class-names.ts'].map((name) => [
+  // @open-design/components primitives used by the composer and the tooltip layer
+  ...['button.tsx', 'button.module.css', 'form-controls.tsx', 'form-controls.module.css', 'class-names.ts', 'modal-stack.ts'].map((name) => [
     `packages/components/src/${name}`,
     `ui-components/${name}`,
   ]),

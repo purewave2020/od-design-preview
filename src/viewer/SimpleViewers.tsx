@@ -142,9 +142,11 @@ export function SvgViewer({ source, file, filesRefreshKey }: ViewerProps) {
           <span className="viewer-divider" aria-hidden />
           <button
             type="button"
-            className="viewer-action"
+            className="viewer-action od-tooltip"
             onClick={() => setReloadKey((n) => n + 1)}
             title={t('fileViewer.reloadDisk')}
+            data-tooltip={t('fileViewer.reloadDisk')}
+            data-tooltip-placement="bottom"
           >
             <Icon name="reload" size={13} />
             <span>{t('fileViewer.reload')}</span>
@@ -215,13 +217,20 @@ export function TextViewer({ source, file, filesRefreshKey }: ViewerProps) {
       <div className="viewer-toolbar">
         <div className="viewer-toolbar-left" />
         <div className="viewer-toolbar-actions">
-          <button type="button" className="viewer-action" onClick={() => setReloadKey((n) => n + 1)} title={t('fileViewer.reloadDisk')}>
+          <button
+            type="button"
+            className="viewer-action od-tooltip"
+            onClick={() => setReloadKey((n) => n + 1)}
+            title={t('fileViewer.reloadDisk')}
+            data-tooltip={t('fileViewer.reloadDisk')}
+            data-tooltip-placement="bottom"
+          >
             <Icon name="reload" size={13} />
             <span>{t('fileViewer.reload')}</span>
           </button>
           <button
             type="button"
-            className="viewer-action"
+            className="viewer-action od-tooltip"
             onClick={() => {
               if (text == null) return;
               void copyText(text).then((ok) => {
@@ -231,6 +240,8 @@ export function TextViewer({ source, file, filesRefreshKey }: ViewerProps) {
               });
             }}
             title={t('fileViewer.copyTitle')}
+            data-tooltip={t('fileViewer.copyTitle')}
+            data-tooltip-placement="bottom"
           >
             <Icon name={copied ? 'check' : 'copy'} size={13} />
             <span>{copied ? t('fileViewer.copied') : t('fileViewer.copy')}</span>

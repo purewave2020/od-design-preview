@@ -876,6 +876,38 @@ button:disabled {
 .od-tooltip {
   position: relative;
 }
+.od-tooltip-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  z-index: var(--z-hint);
+
+  max-width: min(260px, calc(100vw - 16px));
+
+  padding: 5px 9px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+
+  background: var(--bg-elevated);
+  box-shadow: var(--shadow-md);
+  color: var(--text-strong);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  contain: layout paint style;
+  pointer-events: none;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  will-change: transform;
+
+  opacity: 0;
+  transition: opacity var(--duration-faster) var(--ease-out);
+}
+
+.od-tooltip-layer[data-tooltip-context="menu"] {
+  z-index: calc(var(--z-menu) + 1);
+}
 
 input, textarea, select {
   font: inherit;

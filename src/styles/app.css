@@ -137,6 +137,7 @@ body,
   flex-direction: column;
   gap: 1px;
   font-size: 12.5px;
+  font-weight: 400;
 }
 .odp-menu-section-label {
   padding: 6px 8px 4px;
@@ -146,13 +147,22 @@ body,
   text-transform: uppercase;
   color: var(--text-soft);
 }
+/* Upstream's global `button` rule fixes height at 36px, centres the content
+   and forbids wrapping; menu rows need none of that (two-line rows overflowed
+   into the next one and icons drifted to the middle). */
 .odp-menu-item {
   display: flex;
   align-items: flex-start;
+  justify-content: flex-start;
   gap: 10px;
   width: 100%;
+  height: auto;
   min-height: 34px;
+  flex: 0 0 auto;
   padding: 7px 8px;
+  font-weight: 500;
+  line-height: 1.4;
+  white-space: normal;
   border: 1px solid transparent;
   border-radius: var(--radius-sm);
   background: transparent;
@@ -169,20 +179,29 @@ body,
 .odp-menu-item:hover {
   background: var(--bg-subtle);
 }
+.odp-menu-item:active {
+  transform: none;
+}
+.odp-menu-item:focus-visible {
+  outline: none;
+  border-color: var(--border-strong, var(--border));
+}
 .odp-menu-copy {
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
   gap: 2px;
   min-width: 0;
 }
 .odp-menu-copy > span {
   color: var(--text-strong);
+  font-weight: 500;
 }
 .odp-menu-copy small {
   color: var(--text-muted);
   font-size: 11.5px;
-  font-weight: 500;
-  line-height: 1.35;
+  font-weight: 400;
+  line-height: 1.4;
 }
 .odp-menu-separator {
   height: 1px;
@@ -191,10 +210,11 @@ body,
 }
 .odp-menu-row {
   display: flex;
+  flex: 0 0 auto;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  padding: 4px 8px;
+  padding: 4px 9px;
   min-height: 34px;
 }
 .odp-menu-row-label {
@@ -202,6 +222,14 @@ body,
   align-items: center;
   gap: 10px;
   color: var(--text);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.odp-menu .odp-seg {
+  flex: 0 0 auto;
+}
+.odp-menu .odp-seg .viewer-tab {
+  font-weight: 500;
 }
 .odp-menu-row-label > svg {
   color: var(--text-muted);
@@ -481,11 +509,17 @@ body,
 /* Project menu: where edits are saved. */
 .odp-menu-note {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 8px 8px;
+  flex: 0 0 auto;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 6px 9px 8px;
   color: var(--text-soft);
   font-size: 12px;
+  line-height: 1.4;
+}
+.odp-menu-note > svg {
+  flex: 0 0 auto;
+  margin-top: 2px;
 }
 
 /* Sketch editor fills the viewer like upstream's sketch tab. */

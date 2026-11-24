@@ -86,6 +86,23 @@ async function reviewSuite(label, { dir } = {}) {
   let frame = await previewFrame();
   const originalLead = (await frame.locator('p').first().textContent())?.trim() ?? '';
 
+  // --- Toolbar tooltips (upstream's shared TooltipLayer bubble) ------------
+  await attempt(tag('toolbar tooltips'), async () => {
+    const btn = activeViewer().getByTestId('board-mode-toggle');
+    await btn.hover();
+    await page.waitForTimeout(300);
+    const tip = await page.evaluate(() => {
+      const el = document.querySelector('.od-tooltip-layer');
+      if (!el) return null;
+      const cs = getComputedStyle(el);
+      return { text: el.textContent, visible: cs.visibility === 'visible' && Number(cs.opacity) > 0.9 };
+    });
+    const want = await btn.getAttribute('data-tooltip');
+    check(tag('toolbar buttons show a hover tooltip'), Boolean(tip?.visible && want && tip.text === want), tip?.text ?? 'none');
+    await page.mouse.move(5, 880);
+    await page.waitForTimeout(200);
+  });
+
   // --- 注释 Comment tool -----------------------------------------------------
   await attempt(tag('comment tool'), async () => {
     const before = await commentCount();
@@ -284,7 +301,10 @@ async function reviewSuite(label, { dir } = {}) {
     const restored = await typeInline('Simple pricing');
     check(tag('inline edit back to the original'), restored === 'Simple pricing', restored);
     // Drag to move: saved with the other pending edits when leaving Edit.
-    // (A narrow element, so the inspector opening beside it stays clear of the pointer.)
+    // (Close the inspector the inline edit opened, and pick a narrow element so
+    // the inspector re-opening beside it stays clear of the pointer.)
+    if (await page.locator('.manual-edit-titlebar-close').count()) await page.locator('.manual-edit-titlebar-close').first().click();
+    await page.waitForTimeout(300);
     frame = await previewFrame();
     await frame.locator('.price').first().scrollIntoViewIfNeeded();
     const priceBox = await frame.locator('.price').first().boundingBox();
@@ -379,6 +399,16 @@ try {
     check('[demo] project menu says where edits go', /browser/i.test(mode ?? ''), mode ?? '');
     const discard = page.getByTestId('discard-local-changes');
     check('[demo] discard browser edits offered', await discard.isVisible());
+    const rows = await page.evaluate(() =>
+      [...document.querySelectorAll('body > .odp-menu > *')].map((el) => {
+        const r = el.getBoundingClientRect();
+        const icon = el.querySelector(':scope > svg');
+        return { top: r.top, bottom: r.bottom, iconX: icon ? Math.round(icon.getBoundingClientRect().x) : null };
+      }),
+    );
+    const overlap = rows.some((r, i) => i > 0 && r.top < rows[i - 1].bottom - 0.5);
+    const iconXs = new Set(rows.map((r) => r.iconX).filter((x) => x !== null));
+    check('[demo] project menu rows laid out (no overlap, icons aligned)', !overlap && iconXs.size === 1, `${rows.length} rows, icon x ${[...iconXs].join('/')}`);
     await page.keyboard.press('Escape');
   });
 

@@ -1573,11 +1573,13 @@ export const HtmlViewer = memo(function HtmlViewer({
                 key={id}
                 type="button"
                 role="tab"
-                className={`viewer-tab ${mode === id ? 'active' : ''}`}
+                className={`viewer-tab od-tooltip ${mode === id ? 'active' : ''}`}
                 aria-label={label}
                 aria-selected={mode === id}
                 disabled={viewerOnly && id === 'source'}
                 title={label}
+                data-tooltip={label}
+                data-tooltip-placement="bottom"
                 data-testid={`mode-${id}`}
                 onClick={() => {
                   if (id === 'source') withEditExited(() => setMode('source'));
@@ -1601,6 +1603,8 @@ export const HtmlViewer = memo(function HtmlViewer({
                 className="icon-only od-tooltip"
                 onClick={() => postSlide('prev')}
                 title={t('fileViewer.previousSlide')}
+                data-tooltip={t('fileViewer.previousSlide')}
+                data-tooltip-placement="bottom"
                 aria-label={t('fileViewer.previousSlide')}
                 disabled={slideState !== null && slideState.active <= 0}
               >
@@ -1612,6 +1616,8 @@ export const HtmlViewer = memo(function HtmlViewer({
                 className="icon-only od-tooltip"
                 onClick={() => postSlide('next')}
                 title={t('fileViewer.nextSlide')}
+                data-tooltip={t('fileViewer.nextSlide')}
+                data-tooltip-placement="bottom"
                 aria-label={t('fileViewer.nextSlide')}
                 disabled={slideState !== null && slideState.active >= slideState.count - 1}
               >
