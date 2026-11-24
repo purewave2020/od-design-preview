@@ -125,7 +125,8 @@ scripts/
 | `components/ManualEditPanel.tsx` | 同上 | 原样拷贝（手动编辑检查器） |
 | `components/SketchEditor.tsx`、`SketchPreview.tsx`、`sketch-model.ts`、`sketch-colors.ts`、`Toast.tsx` | 同上 | 原样拷贝（草图编辑器） |
 | `components/workspace/TabLauncherMenu.tsx`（+ `.module.css`）、`tab-launcher.ts` | 同上 | 原样拷贝（「+」启动菜单） |
-| `packages/components` 的 `Button`、`Textarea` | `vendor/open-design/ui-components/` | 原样拷贝 |
+| `components/TooltipLayer.tsx` | 同上 | 原样拷贝（工具栏按钮的悬浮提示气泡，读 `.od-tooltip[data-tooltip]`） |
+| `packages/components` 的 `Button`、`Textarea`、`modal-stack` | `vendor/open-design/ui-components/` | 原样拷贝 |
 | `exports.ts`、`zip.ts`、`speaker-notes.ts`、`deck-thumbnail-parser.ts`、`react-component.ts`、`Icon.tsx`、`DeckThumbnailRail.tsx` 等 | 同上 | 原样拷贝 |
 | `@open-design/host`、`collab/workspace-identity`、`i18n`、`types.ts`、`providers/registry.ts`、`contracts/analytics` | `vendor/open-design/shims/` | 手写适配（无宿主、无团队、无埋点；`registry` 只提供草图缩略图需要的读文件） |
 | `FileViewer.tsx` 里 `HtmlViewer` 的评论 / 标记 / 编辑宿主逻辑 | `viewer/HtmlViewer.tsx`、`review/useManualEdit.tsx`、`review/review-bridge.ts` | 按同样 DOM/class 和消息协议重写 |
