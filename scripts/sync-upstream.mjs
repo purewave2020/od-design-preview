@@ -164,6 +164,51 @@ const PATCHES = [
     find: "if (e.key === 'Enter') void send('queue');",
     replace: "if (e.key === 'Enter') void send('send'); // [od-design-preview patch] see scripts/sync-upstream.mjs PATCHES",
   },
+  {
+    file: 'components/TooltipLayer.tsx',
+    reason:
+      'The no-deps layout effect called updatePosition() after every commit and relied on the ' +
+      'updater returning `current` to stop. With updates of mixed priority queued (pointerover = ' +
+      'continuous lane, passive effects = default lane, the effect itself = sync lane) React ' +
+      're-applies the updaters from an older base state, gets a new object every time, and the ' +
+      'effect loops until "Maximum update depth exceeded" unmounts the whole app (white screen). ' +
+      'Only queue the update when the committed bubble is actually stale.',
+    find: [
+      "  useLayoutEffect(() => {",
+      "    if (!state?.visible) return;",
+      "    updatePosition();",
+      "  });",
+    ].join('\n'),
+    replace: [
+      "  // [od-design-preview patch] see scripts/sync-upstream.mjs PATCHES",
+      "  useLayoutEffect(() => {",
+      "    if (!state?.visible) return;",
+      "    // Queue an update only when the committed bubble is actually stale. With",
+      "    // updates of mixed priority in the queue (pointerover = continuous lane,",
+      "    // passive effects = default lane, this effect = sync lane) React re-applies",
+      "    // the updaters from an older base state, so updatePosition() returning",
+      "    // `current` is no reliable \"nothing changed\" signal; calling it on every",
+      "    // commit looped until \"Maximum update depth exceeded\" blanked the app.",
+      "    const node = tooltipRef.current;",
+      "    if (",
+      "      node",
+      "      && isActiveTooltipTarget(state.target)",
+      "      && state.target.getAttribute('aria-expanded') !== 'true'",
+      "    ) {",
+      "      const placement = tooltipPlacement(state.target);",
+      "      const text = state.target.dataset.tooltip?.trim() ?? state.text;",
+      "      if (",
+      "        text === state.text",
+      "        && placement === state.placement",
+      "        && sameStyle(state.style, positionTooltip(state.target, node, placement))",
+      "      ) {",
+      "        return;",
+      "      }",
+      "    }",
+      "    updatePosition();",
+      "  });",
+    ].join('\n'),
+  },
 ];
 
 const stripModuleExt = (p) => p.replace(/\.(tsx?|js|mjs)$/, '');

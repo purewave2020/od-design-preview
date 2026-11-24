@@ -278,8 +278,31 @@ export function TooltipLayer() {
   // A route can remove the trigger in the same commit without changing this
   // portal's state. Recheck every host commit before paint; the body observer
   // remains responsible for DOM changes outside React's commit lifecycle.
+  // [od-design-preview patch] see scripts/sync-upstream.mjs PATCHES
   useLayoutEffect(() => {
     if (!state?.visible) return;
+    // Queue an update only when the committed bubble is actually stale. With
+    // updates of mixed priority in the queue (pointerover = continuous lane,
+    // passive effects = default lane, this effect = sync lane) React re-applies
+    // the updaters from an older base state, so updatePosition() returning
+    // `current` is no reliable "nothing changed" signal; calling it on every
+    // commit looped until "Maximum update depth exceeded" blanked the app.
+    const node = tooltipRef.current;
+    if (
+      node
+      && isActiveTooltipTarget(state.target)
+      && state.target.getAttribute('aria-expanded') !== 'true'
+    ) {
+      const placement = tooltipPlacement(state.target);
+      const text = state.target.dataset.tooltip?.trim() ?? state.text;
+      if (
+        text === state.text
+        && placement === state.placement
+        && sameStyle(state.style, positionTooltip(state.target, node, placement))
+      ) {
+        return;
+      }
+    }
     updatePosition();
   });
 

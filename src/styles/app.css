@@ -533,3 +533,66 @@ body,
   flex: 1 1 auto;
   min-height: 0;
 }
+
+/* Crash screen (src/app/ErrorBoundary.tsx) — shown instead of a blank page. */
+.odp-crash {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: var(--bg, #fff);
+  color: var(--text, #111);
+}
+.odp-crash-card {
+  width: min(520px, 100%);
+  padding: 24px;
+  border: 1px solid var(--border, #ddd);
+  border-radius: var(--radius, 10px);
+  background: var(--bg-panel, #fff);
+  box-shadow: var(--shadow-md, none);
+}
+.odp-crash-title {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-strong, inherit);
+}
+.odp-crash-body {
+  margin: 0 0 12px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-muted, inherit);
+}
+.odp-crash-detail {
+  margin: 0 0 16px;
+  padding: 10px 12px;
+  max-height: 160px;
+  overflow: auto;
+  border-radius: var(--radius-sm, 6px);
+  background: var(--bg-subtle, rgba(0, 0, 0, 0.04));
+  font-size: 12px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.odp-crash-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.odp-crash-btn {
+  padding: 6px 14px;
+  border: 1px solid var(--border, #ddd);
+  border-radius: var(--radius-sm, 6px);
+  background: var(--bg-panel, #fff);
+  color: var(--text, inherit);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.odp-crash-btn-primary {
+  border-color: transparent;
+  background: var(--text-strong, #111);
+  color: var(--bg, #fff);
+}
