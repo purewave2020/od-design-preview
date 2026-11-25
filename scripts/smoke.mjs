@@ -216,7 +216,7 @@ try {
   await shot(page, '06-json');
 
   // 10. Local folder source (inlined assets) -------------------------------------------------
-  await page.locator('input[type=file][webkitdirectory]').setInputFiles(path.join(root, 'public/demo-project'));
+  await page.locator('input[type=file][webkitdirectory]').setInputFiles(path.join(root, 'apps/preview/public/demo-project'));
   await page.getByTestId('design-files-panel').waitFor({ timeout: 10000 });
   const chip = await page.getByTestId('project-switcher').textContent();
   check('local folder opens as project', !!chip && chip.includes('demo-project'), chip ?? '');

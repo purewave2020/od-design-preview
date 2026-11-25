@@ -1,0 +1,50 @@
+{
+  "name": "@od-design/preview",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Open Design 设计预览业务组件库（Vue 3）：设计文件面板、HTML / 幻灯片预览、注释 / 评论 / 标记 / 编辑、草图编辑器。",
+  "license": "Apache-2.0",
+  "main": "./src/index.ts",
+  "module": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./styles": "./src/styles/index.ts",
+    "./sources/*": "./src/sources/*.ts",
+    "./package.json": "./package.json"
+  },
+  "sideEffects": [
+    "*.css",
+    "*.scss",
+    "*.vue",
+    "./src/styles/index.ts"
+  ],
+  "scripts": {
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json"
+  },
+  "peerDependencies": {
+    "axios": "^1.9.0",
+    "vue": "^3.5.13",
+    "vue-i18n": "^11.1.3"
+  },
+  "dependencies": {
+    "@excalidraw/excalidraw": "0.18.1",
+    "dompurify": "3.4.2",
+    "jspdf": "4.2.1",
+    "micromark": "4.0.2",
+    "micromark-extension-gfm": "3.0.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.28",
+    "@types/react-dom": "18.3.7",
+    "axios": "1.9.0",
+    "sass": "1.105.2",
+    "typescript": "5.7.3",
+    "vue": "3.5.13",
+    "vue-i18n": "11.1.3",
+    "vue-tsc": "2.2.12"
+  }
+}

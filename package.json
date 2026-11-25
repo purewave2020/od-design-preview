@@ -1,39 +1,44 @@
 {
   "name": "od-design-preview",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
-  "description": "Standalone design preview workspace extracted from Open Design (nexu-io/open-design) — the right-hand preview panel of the project workspace, with its comment, mark, edit and sketch tools, as its own web front-end.",
+  "description": "Standalone design preview workspace extracted from Open Design (nexu-io/open-design) — the right-hand preview panel of the project workspace, with its comment, mark, edit and sketch tools. pnpm workspace: Vue 3 business component library (packages/design-preview) + Vite app (apps/preview).",
   "license": "Apache-2.0",
+  "packageManager": "pnpm@10.34.9",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc --noEmit -p tsconfig.json && vite build",
-    "preview": "vite preview",
-    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "dev": "pnpm --filter @od-design/preview-app dev",
+    "build": "pnpm typecheck && pnpm --filter @od-design/preview-app exec vite build",
+    "preview": "pnpm --filter @od-design/preview-app preview",
+    "typecheck": "pnpm -r --parallel typecheck",
     "sync:upstream": "node scripts/sync-upstream.mjs",
     "smoke": "node scripts/smoke.mjs",
     "smoke:review": "node scripts/review-smoke.mjs",
+    "check:isolation": "node scripts/isolation-check.mjs",
     "mock-daemon": "node scripts/mock-daemon.mjs"
   },
-  "dependencies": {
-    "@excalidraw/excalidraw": "0.18.1",
-    "dompurify": "3.4.2",
-    "jspdf": "4.2.1",
-    "micromark": "4.0.2",
-    "micromark-extension-gfm": "3.0.0",
-    "react": "18.3.1",
-    "react-dom": "18.3.1"
-  },
   "devDependencies": {
-    "@types/react": "18.3.28",
-    "@types/react-dom": "18.3.7",
-    "@vitejs/plugin-react": "6.3.0",
+    "@vitejs/plugin-vue": "5.2.4",
     "playwright-core": "1.65.1",
+    "postcss": "8.5.33",
+    "postcss-selector-parser": "7.2.1",
     "purgecss": "9.1.0",
-    "typescript": "7.0.2",
-    "vite": "8.3.8"
+    "sass": "1.105.2",
+    "typescript": "5.7.3",
+    "vite": "^6.0.0",
+    "vue-tsc": "2.2.12"
+  },
+  "pnpm": {
+    "overrides": {
+      "vite": "6.4.4",
+      "vue": "3.5.13"
+    },
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=20",
+    "pnpm": ">=9"
   }
 }

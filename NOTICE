@@ -3,23 +3,37 @@ Copyright 2026 the od-design-preview authors
 
 This product includes software and assets from Open Design
 (https://github.com/nexu-io/open-design), licensed under the Apache License,
-Version 2.0. The full license text is in src/vendor/open-design/LICENSE.
+Version 2.0. The full license text is in
+packages/design-preview/src/vendor/open-design/LICENSE.
 
-Derived or copied material:
-  - src/vendor/open-design/**          (verbatim copies; see UPSTREAM.json for
-                                         the exact files and upstream commit)
-  - src/styles/upstream.css            (tree-shaken copy of apps/web/src/styles)
-  - src/i18n/upstream-strings.ts       (extracted from apps/web/src/i18n/locales)
-  - public/fonts/*                     (apps/web/public/fonts)
-  - public/demo-project/pitch-deck.html  (design-templates/html-ppt-pitch-deck/example.html)
-  - public/demo-project/dashboard.html   (design-templates/dashboard/example.html)
-  - public/demo-project/assets/hero.jpg  (apps/web/public/mock-covers/cover-3.jpg)
-  - src/viewer/*, src/workspace/*      (re-implementations of FileViewer.tsx,
-                                         FileWorkspace.tsx and DesignFilesPanel.tsx
-                                         that keep upstream markup and class names)
-  - src/review/*, src/sketch/*         (re-implementations of the comment, mark,
-                                         manual-edit and sketch host logic in
-                                         FileViewer.tsx / FileWorkspace.tsx)
+Derived or copied material (paths under packages/design-preview/ unless noted):
+  - src/vendor/open-design/**/*.ts, *.module.css
+                                       (verbatim copies; see UPSTREAM.json for
+                                        the exact files and upstream commit)
+  - src/vendor/open-design/**/*.vue, components/Icon.ts,
+    components/sketch/*, components/board-composer.ts, preview-draw.ts,
+    deck-thumbnails.ts, manual-edit/*, ui-components/button.ts
+                                       (Vue 3 ports of the upstream React
+                                        components listed under "ported" in
+                                        UPSTREAM.json, keeping their markup,
+                                        class names and behaviour)
+  - src/styles/upstream.css, upstream.scoped.css
+                                       (tree-shaken copy of apps/web/src/styles,
+                                        and the same rules scoped to .odp-scope)
+  - src/locales/upstream-strings.ts    (extracted from apps/web/src/i18n/locales)
+  - src/components/viewer/*, src/components/workspace/*
+                                       (re-implementations of FileViewer.tsx,
+                                        FileWorkspace.tsx and DesignFilesPanel.tsx
+                                        that keep upstream markup and class names)
+  - src/components/review/*, src/review/*, src/components/sketch/*
+                                       (re-implementations of the comment, mark,
+                                        manual-edit and sketch host logic in
+                                        FileViewer.tsx / FileWorkspace.tsx)
+  - apps/preview/public/fonts/*        (apps/web/public/fonts)
+  - apps/preview/public/demo-project/pitch-deck.html  (design-templates/html-ppt-pitch-deck/example.html)
+  - apps/preview/public/demo-project/dashboard.html   (design-templates/dashboard/example.html)
+  - apps/preview/public/demo-project/assets/hero.jpg  (apps/web/public/mock-covers/cover-3.jpg)
 
 The sketch editor uses Excalidraw (@excalidraw/excalidraw, MIT License),
-installed from npm like upstream does.
+installed from npm like upstream does; it is a React component and runs as a
+small React island inside the Vue sketch editor.

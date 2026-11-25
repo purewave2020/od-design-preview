@@ -1,0 +1,42 @@
+// App-shell strings (vue-i18n, default message syntax). The preview library
+// ships its own dictionaries; see @od-design/preview › locales.
+export default {
+  "app": {
+    "demoProject": "Demo project",
+    "demoProjectDesc": "Bundled sample: landing page, slide deck, mobile screen, docs",
+    "switchProject": "Switch project",
+    "openFolderLive": "Open folder (live reload)…",
+    "openFolderDesc": "Preview a local folder. Nothing is uploaded.",
+    "openFolder": "Open folder…",
+    "openFiles": "Open files…",
+    "connectDaemon": "Connect to Open Design…",
+    "connectDaemonDesc": "Preview a live project from a running Open Design daemon",
+    "copyLink": "Copy link to this view",
+    "writeModeDisk": "Edits are saved to the folder",
+    "writeModeDaemon": "Edits are saved through Open Design",
+    "writeModeBrowser": "Edits are kept in this browser",
+    "writeModeMemory": "Edits stay in this tab only",
+    "discardLocalChanges": "Discard browser edits",
+    "language": "Language",
+    "theme": "Theme",
+    "themeSystem": "System",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "liveBadge": "Live",
+    "daemonTitle": "Open a project from Open Design",
+    "daemonOrigin": "Daemon address",
+    "daemonLoadProjects": "Load projects",
+    "daemonOriginHint": "Leave empty to use this server’s /api proxy (OD_DAEMON_URL, default http://127.0.0.1:7456).",
+    "daemonError": "Could not reach the daemon: {message}",
+    "daemonNoProjects": "No projects found.",
+    "daemonProjectId": "Project ID",
+    "daemonOpen": "Open project",
+    "linkCopied": "Link copied",
+    "discardLocalChangesConfirm": "Discard every edit, sketch, document and upload kept in this browser for this project?",
+    "localChangesDiscarded": "Browser edits discarded",
+    "crashTitle": "Something went wrong",
+    "crashBody": "The preview hit an unexpected error. Try again, or reload the page if it keeps happening.",
+    "crashRetry": "Try again",
+    "crashReload": "Reload page"
+  }
+} as const;

@@ -1,0 +1,42 @@
+// App-shell strings (vue-i18n, default message syntax). The preview library
+// ships its own dictionaries; see @od-design/preview › locales.
+export default {
+  "app": {
+    "demoProject": "示例项目",
+    "demoProjectDesc": "内置示例：落地页、幻灯片、移动端页面、文档",
+    "switchProject": "切换项目",
+    "openFolderLive": "打开文件夹（实时刷新）…",
+    "openFolderDesc": "预览本地文件夹，文件不会被上传。",
+    "openFolder": "打开文件夹…",
+    "openFiles": "打开文件…",
+    "connectDaemon": "连接 Open Design…",
+    "connectDaemonDesc": "从正在运行的 Open Design daemon 预览实时项目",
+    "copyLink": "复制当前视图链接",
+    "writeModeDisk": "修改直接保存到文件夹",
+    "writeModeDaemon": "修改通过 Open Design 保存",
+    "writeModeBrowser": "修改保存在当前浏览器中",
+    "writeModeMemory": "修改只保留在当前标签页",
+    "discardLocalChanges": "丢弃浏览器中的修改",
+    "language": "语言",
+    "theme": "主题",
+    "themeSystem": "跟随系统",
+    "themeLight": "浅色",
+    "themeDark": "深色",
+    "liveBadge": "实时",
+    "daemonTitle": "从 Open Design 打开项目",
+    "daemonOrigin": "Daemon 地址",
+    "daemonLoadProjects": "加载项目列表",
+    "daemonOriginHint": "留空则使用本服务的 /api 代理（OD_DAEMON_URL，默认 http://127.0.0.1:7456）。",
+    "daemonError": "无法连接 daemon：{message}",
+    "daemonNoProjects": "没有找到项目。",
+    "daemonProjectId": "项目 ID",
+    "daemonOpen": "打开项目",
+    "linkCopied": "链接已复制",
+    "discardLocalChangesConfirm": "丢弃此项目保存在浏览器中的所有修改、草图、文档和上传文件？",
+    "localChangesDiscarded": "已丢弃浏览器中的修改",
+    "crashTitle": "页面出错了",
+    "crashBody": "预览遇到了意外错误。可以先点「重试」，如果反复出现再重新加载页面。",
+    "crashRetry": "重试",
+    "crashReload": "重新加载页面"
+  }
+} as const;

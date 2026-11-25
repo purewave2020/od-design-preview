@@ -16,7 +16,14 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright-core';
+
+// The library is a workspace package outside the app root; the dev server
+// serves it through /@fs/ (allowed by server.fs.allow in vite.config.ts).
+const LOCAL_SOURCE_MODULE = `/@fs${encodeURI(
+  path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../packages/design-preview/src/sources/local-source.ts'),
+)}`;
 
 const base = (process.argv[2] ?? process.env.SMOKE_URL ?? 'http://127.0.0.1:5178').replace(/\/$/, '');
 const shotsDir = process.env.SMOKE_SCREENSHOTS ?? '';
@@ -59,7 +66,7 @@ page.on('console', (msg) => {
 });
 page.on('response', (resp) => {
   // (The local-folder check probes for the dev server's module endpoint.)
-  if (resp.status() >= 400 && !resp.url().endsWith('/src/sources/local-source.ts')) consoleErrors.push(`http ${resp.status()}: ${resp.request().method()} ${resp.url()}`);
+  if (resp.status() >= 400 && !resp.url().endsWith('/sources/local-source.ts')) consoleErrors.push(`http ${resp.status()}: ${resp.request().method()} ${resp.url()}`);
 });
 
 const activeViewer = () => page.locator('[data-testid="retained-file-viewer"]:not([aria-hidden])');
@@ -416,10 +423,10 @@ try {
   // place. The OS picker cannot be automated, so drive LocalSource directly
   // with an origin-private directory handle (same API surface). Dev server only.
   await attempt('[local] folder writes', async () => {
-    const result = await page.evaluate(async () => {
+    const result = await page.evaluate(async (moduleUrl) => {
       let mod;
       try {
-        mod = await import('/src/sources/local-source.ts');
+        mod = await import(moduleUrl);
       } catch {
         return null;
       }
@@ -438,7 +445,7 @@ try {
       const out = { mode: source.writeMode, md: await md.text(), idx: await idx.text(), files };
       await root.removeEntry('odp-smoke', { recursive: true });
       return out;
-    });
+    }, LOCAL_SOURCE_MODULE);
     if (!result) {
       console.log('SKIP  [local] folder writes (needs the dev server)');
       return;
